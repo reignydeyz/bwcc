@@ -60,9 +60,9 @@ namespace BWCC.Tests
         }
 
         [Theory]
-        //[InlineData("This is what I learned from Mr. Jones about a paragraph.", "this", 1)]
+        [InlineData("This is what I learned from Mr. Jones about a paragraph.", "this", 1)]
         [InlineData("There are usually between three and eight sentences. ", "the", 0)]
-        //[InlineData("a paragraph is a group of words put together to form a group that is usually longer than a sentence.", "a", 4)]
+        [InlineData("a paragraph is a group of words put together to form a group that is usually longer than a sentence.", "a", 4)]
         public void GetWordCount_WithTextParam_Success(string text, string word, int expected)
         {
             // Arrange
