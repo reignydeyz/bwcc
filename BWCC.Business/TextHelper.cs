@@ -41,44 +41,47 @@ namespace BWCC.Business
         /// <param name="word"></param>
         /// <param name="text"></param>
         /// <returns>Number</returns>
-        private int GetWordCount(string word, string text, bool multipleSentences = true)
+        public int GetWordCount(string word, string text)
         {
-            var words = text.Split(' ');
+            word = word.ToLower();
+            text = text.ToLower();
 
-            var count = 0;
+            var indices = new List<int>(); // I use this to debug (can be simplified)
             var index = 0;
-
-            // Captures word in between the sentence
-            while ((index = text.IndexOf($" {word.ToLower()} ", index)) != -1)
+            while ((index = text.IndexOf(word , index)) != -1)
             {
+                // If word is in the middle of the text
+                if (index + word.Length < text.Length && index - 1 >= 0)
+                {
+                    // Verifies previous and next character if it is NOT a letter
+                    var previous = text[index - 1];
+                    var next = text[index + word.Length];
+                    if (!Char.IsLetter(previous) && !Char.IsLetter(next))
+                    {
+                        indices.Add(index);
+                    };
+                }
+                // If word is at the beginning of the entire text
+                else if (index == 0)
+                {
+                    var next = text[index + word.Length];
+
+                    if (!Char.IsLetter(next))
+                        indices.Add(index);
+                }
+                // If word is at the end of the entire text
+                else if (index == text.Length - 1)
+                {
+                    var previous = text[index - 1];
+
+                    if (!Char.IsLetter(previous))
+                        indices.Add(index);
+                }
+                
                 index += word.Length;
-                count++;
             }
 
-            // Captures word in between the sentence
-            index = 0;
-            while ((index = text.IndexOf($" {word.ToLower()}, ", index)) != -1)
-            {
-                index += word.Length;
-                count++;
-            }
-
-            // Captures word at the end of sentence
-            index = 0;
-            while ((index = text.IndexOf($" {word.ToLower()}. ", index)) != -1)
-            {
-                index += word.Length;
-                count++;
-            }
-
-            // Captures word at the start of text
-            if (words[0] == word.ToLower())
-                return count + 1;
-            // Captures word at the end of text
-            else if (words[words.Length - 1] == word.ToLower() || (words[words.Length - 1].Contains(word)))
-                return count + 1;
-            else
-                return count;
+            return indices.Count();
         }
 
         /// <summary>
@@ -136,7 +139,7 @@ namespace BWCC.Business
 
             foreach(var sentence in _sentences)
             {
-                var multiplier = GetWordCount(word, sentence, false);
+                var multiplier = GetWordCount(word, sentence);
 
                 if (multiplier > 0)
                 {

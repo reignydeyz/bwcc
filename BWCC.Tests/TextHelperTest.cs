@@ -23,6 +23,7 @@ namespace BWCC.Tests
         [InlineData("paragraphs", 5)]
         [InlineData("on", 2)]
         [InlineData("e.g.", 1)]
+        [InlineData("smith", 1)]
         public async Task GetWordCount_Success(string word, int expected)
         {
             // Arrange
@@ -59,9 +60,23 @@ namespace BWCC.Tests
         }
 
         [Theory]
+        //[InlineData("This is what I learned from Mr. Jones about a paragraph.", "this", 1)]
+        [InlineData("There are usually between three and eight sentences. ", "the", 0)]
+        //[InlineData("a paragraph is a group of words put together to form a group that is usually longer than a sentence.", "a", 4)]
+        public void GetWordCount_WithTextParam_Success(string text, string word, int expected)
+        {
+            // Arrange
+
+            // Act
+            var res = _textHelper.GetWordCount(word, text);
+
+            // Assert
+            Assert.Equal(expected, res);
+        }
+
+        [Theory]
         [InlineData("this", new int[] {1, 6, 8})]
-        //TODO: I cannot pass this test
-        //[InlineData("a", new int[] { 1, 2, 2, 2, 2, 5, 7, 9, 11 })]
+        [InlineData("a", new int[] { 1, 2, 2, 2, 2, 5, 7, 9, 11 })]
         [InlineData("paragraph", new int[] { 1, 2, 6, 8, 8, 11 })]
         [InlineData("smith", new int[] { 12 })]
         public void GetSentenceIndices_Success(string word, int[] expected)
@@ -77,7 +92,7 @@ namespace BWCC.Tests
             var index = 0;
             foreach(var r in res)
             {
-                Assert.Equal(expected[index], res[index] + 1);
+                Assert.Equal(expected[index], res[index]);
                 index++;
             }
         }
