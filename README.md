@@ -27,6 +27,6 @@ The application will produce the output.txt given article.txt and words.txt whic
 	- UnitTest
 
 ### Output
-![alt text](https://i.ibb.co/M71bVkr/image-2022-03-16-192946.png)
+![alt text](https://i.ibb.co/CVCxWwJ/image-2022-03-17-214451.png)
 
-![alt text](https://i.ibb.co/BwJC9Cw/image-2022-03-16-193511.png)
+![alt text](https://i.ibb.co/sRZnQgh/image-2022-03-17-214557.png)
